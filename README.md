@@ -127,6 +127,12 @@ Task data is stored in `/app/data/tasks.json`. When using Docker, mount this dir
 - Responsive CSS with modern features
 - Mobile-first design approach
 
+## Support the Project
+
+<a href="https://www.buymeacoffee.com/dumbware" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60">
+</a>
+
 ## Contributing
 
 Feel free to submit issues and enhancement requests! 
