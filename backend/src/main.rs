@@ -294,10 +294,7 @@ async fn save_tasks(
     )
     .await
     {
-        Ok(_) => {
-
-            Json(serde_json::json!({ "ok": true })).into_response()
-        }
+        Ok(_) => Json(serde_json::json!({ "ok": true })).into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
 }
@@ -336,8 +333,6 @@ fn safe_compare(a: &str, b: &str) -> bool {
     }
     result == 0
 }
-
-
 
 fn get_cors_layer() -> CorsLayer {
     use axum::http::HeaderValue;
