@@ -91,10 +91,11 @@ impl Component for App {
         // Initialize document classes
         if let Some(window) = web_sys::window()
             && let Some(document) = window.document()
-                && let Some(el) = document.document_element() {
-                    let _ = el.set_attribute("class", &theme);
-                    let _ = el.set_attribute("data-theme", &theme);
-                }
+            && let Some(el) = document.document_element()
+        {
+            let _ = el.set_attribute("class", &theme);
+            let _ = el.set_attribute("data-theme", &theme);
+        }
 
         // Fetch config from backend
         let link = ctx.link().clone();
@@ -356,10 +357,11 @@ impl Component for App {
 
                 if let Some(window) = web_sys::window()
                     && let Some(document) = window.document()
-                        && let Some(el) = document.document_element() {
-                            let _ = el.set_attribute("class", next_theme);
-                            let _ = el.set_attribute("data-theme", next_theme);
-                        }
+                    && let Some(el) = document.document_element()
+                {
+                    let _ = el.set_attribute("class", next_theme);
+                    let _ = el.set_attribute("data-theme", next_theme);
+                }
                 true
             }
 
@@ -373,13 +375,14 @@ impl Component for App {
             Msg::OpenEditTaskModal(col_id, idx) => {
                 if let Some(ref data) = self.board_data
                     && let Some(board) = data.boards.get(&self.active_board_id)
-                        && let Some(col) = board.columns.get(&col_id)
-                            && let Some(task) = col.tasks.get(idx) {
-                                self.task_modal_column_id = Some(col_id);
-                                self.task_modal_index = Some(idx);
-                                self.task_modal_text = task.clone();
-                                self.show_task_modal = true;
-                            }
+                    && let Some(col) = board.columns.get(&col_id)
+                    && let Some(task) = col.tasks.get(idx)
+                {
+                    self.task_modal_column_id = Some(col_id);
+                    self.task_modal_index = Some(idx);
+                    self.task_modal_text = task.clone();
+                    self.show_task_modal = true;
+                }
                 true
             }
             Msg::TaskModalInputChanged(val) => {
@@ -392,50 +395,52 @@ impl Component for App {
                 }
                 if let Some(ref mut data) = self.board_data
                     && let Some(board) = data.boards.get_mut(&self.active_board_id)
-                        && let Some(ref col_id) = self.task_modal_column_id
-                            && let Some(col) = board.columns.get_mut(col_id) {
-                                let tr = get_translations(self.language);
-                                if let Some(idx) = self.task_modal_index {
-                                    col.tasks[idx] = self.task_modal_text.trim().to_string();
-                                    self.show_toast(tr.toast_task_updated.to_string(), false, ctx);
-                                } else {
-                                    col.tasks.push(self.task_modal_text.trim().to_string());
-                                    self.show_toast(tr.toast_task_added.to_string(), false, ctx);
-                                }
-                                self.save_tasks_backend(ctx);
-                            }
+                    && let Some(ref col_id) = self.task_modal_column_id
+                    && let Some(col) = board.columns.get_mut(col_id)
+                {
+                    let tr = get_translations(self.language);
+                    if let Some(idx) = self.task_modal_index {
+                        col.tasks[idx] = self.task_modal_text.trim().to_string();
+                        self.show_toast(tr.toast_task_updated.to_string(), false, ctx);
+                    } else {
+                        col.tasks.push(self.task_modal_text.trim().to_string());
+                        self.show_toast(tr.toast_task_added.to_string(), false, ctx);
+                    }
+                    self.save_tasks_backend(ctx);
+                }
                 self.show_task_modal = false;
                 true
             }
             Msg::DeleteTask => {
                 if let Some(ref mut data) = self.board_data
                     && let Some(board) = data.boards.get_mut(&self.active_board_id)
-                        && let Some(ref col_id) = self.task_modal_column_id
-                            && let Some(idx) = self.task_modal_index
-                                && let Some(col) = board.columns.get_mut(col_id) {
-                                    col.tasks.remove(idx);
-                                    self.save_tasks_backend(ctx);
-                                    let tr = get_translations(self.language);
-                                    self.show_toast(tr.toast_task_deleted.to_string(), false, ctx);
-                                }
+                    && let Some(ref col_id) = self.task_modal_column_id
+                    && let Some(idx) = self.task_modal_index
+                    && let Some(col) = board.columns.get_mut(col_id)
+                {
+                    col.tasks.remove(idx);
+                    self.save_tasks_backend(ctx);
+                    let tr = get_translations(self.language);
+                    self.show_toast(tr.toast_task_deleted.to_string(), false, ctx);
+                }
                 self.show_task_modal = false;
                 true
             }
             Msg::DeleteTaskDirect(col_id, idx) => {
                 if let Some(ref mut data) = self.board_data
                     && let Some(board) = data.boards.get_mut(&self.active_board_id)
-                        && let Some(col) = board.columns.get_mut(&col_id)
-                            && idx < col.tasks.len() {
-                                let window = web_sys::window().unwrap();
-                                let tr = get_translations(self.language);
-                                let message =
-                                    format!("{}\n\n\"{}\"", tr.confirm_delete, col.tasks[idx]);
-                                if window.confirm_with_message(&message).unwrap_or(false) {
-                                    col.tasks.remove(idx);
-                                    self.save_tasks_backend(ctx);
-                                    self.show_toast(tr.toast_task_deleted.to_string(), false, ctx);
-                                }
-                            }
+                    && let Some(col) = board.columns.get_mut(&col_id)
+                    && idx < col.tasks.len()
+                {
+                    let window = web_sys::window().unwrap();
+                    let tr = get_translations(self.language);
+                    let message = format!("{}\n\n\"{}\"", tr.confirm_delete, col.tasks[idx]);
+                    if window.confirm_with_message(&message).unwrap_or(false) {
+                        col.tasks.remove(idx);
+                        self.save_tasks_backend(ctx);
+                        self.show_toast(tr.toast_task_deleted.to_string(), false, ctx);
+                    }
+                }
                 true
             }
             Msg::CloseTaskModal => {
@@ -485,26 +490,27 @@ impl Component for App {
                 };
 
                 if let Some(ref mut data) = self.board_data
-                    && let Some(board) = data.boards.get_mut(&self.active_board_id) {
-                        // Extract task from source column
-                        let task_opt = board
-                            .columns
-                            .get_mut(&src_col_id)
-                            .map(|col| col.tasks.remove(src_idx));
-                        if let Some(task) = task_opt {
-                            // Insert task into destination column
-                            if let Some(dest_col) = board.columns.get_mut(&dest_col_id) {
-                                if let Some(idx) = dest_idx {
-                                    dest_col.tasks.insert(idx, task);
-                                } else {
-                                    dest_col.tasks.push(task);
-                                }
-                                self.save_tasks_backend(ctx);
-                                let tr = get_translations(self.language);
-                                self.show_toast(tr.toast_task_moved.to_string(), false, ctx);
+                    && let Some(board) = data.boards.get_mut(&self.active_board_id)
+                {
+                    // Extract task from source column
+                    let task_opt = board
+                        .columns
+                        .get_mut(&src_col_id)
+                        .map(|col| col.tasks.remove(src_idx));
+                    if let Some(task) = task_opt {
+                        // Insert task into destination column
+                        if let Some(dest_col) = board.columns.get_mut(&dest_col_id) {
+                            if let Some(idx) = dest_idx {
+                                dest_col.tasks.insert(idx, task);
+                            } else {
+                                dest_col.tasks.push(task);
                             }
+                            self.save_tasks_backend(ctx);
+                            let tr = get_translations(self.language);
+                            self.show_toast(tr.toast_task_moved.to_string(), false, ctx);
                         }
                     }
+                }
 
                 self.dragged_column_id = None;
                 self.dragged_task_index = None;
@@ -617,14 +623,16 @@ impl Component for App {
 impl App {
     fn update_document_title(&self) {
         if let Some(window) = web_sys::window()
-            && let Some(document) = window.document() {
-                if let Some(ref data) = self.board_data
-                    && let Some(board) = data.boards.get(&self.active_board_id) {
-                        document.set_title(&format!("{} - {}", board.name, self.site_title));
-                        return;
-                    }
-                document.set_title(&self.site_title);
+            && let Some(document) = window.document()
+        {
+            if let Some(ref data) = self.board_data
+                && let Some(board) = data.boards.get(&self.active_board_id)
+            {
+                document.set_title(&format!("{} - {}", board.name, self.site_title));
+                return;
             }
+            document.set_title(&self.site_title);
+        }
     }
 
     fn load_tasks(&self, ctx: &Context<Self>) {

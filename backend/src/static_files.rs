@@ -60,10 +60,11 @@ fn get_files_recursive(dir: &Path, base: &Path) -> Vec<String> {
             if path.is_dir() {
                 files.extend(get_files_recursive(&path, base));
             } else if let Ok(rel) = path.strip_prefix(base)
-                && let Some(s) = rel.to_str() {
-                    let url = format!("/{}", s.replace('\\', "/"));
-                    files.push(url);
-                }
+                && let Some(s) = rel.to_str()
+            {
+                let url = format!("/{}", s.replace('\\', "/"));
+                files.push(url);
+            }
         }
     }
     files
