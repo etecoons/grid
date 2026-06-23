@@ -1,5 +1,9 @@
 # RustKan - High-Performance Kanban Board
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/UberMetroid/RustKan/main/logo.png" alt="RustKan Logo" width="128" height="128">
+</p>
+
 RustKan is a clean, secure, and lightning-fast self-hosted Kanban board application built in Rust using Yew (WebAssembly frontend) and Axum (API backend).
 
 ---
