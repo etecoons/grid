@@ -11,4 +11,4 @@ services:
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
       - RUSTKAN_PIN=${RUSTKAN_PIN}
     volumes:
-      - ./data:/usr/src/app/data
+      - ./data:/app/data

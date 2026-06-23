@@ -25,7 +25,7 @@ services:
       - ALLOWED_ORIGINS=*
       - RUSTKAN_PIN=1234  # Optional: Set a PIN to lock board access
     volumes:
-      - ./data:/usr/src/app/data
+      - ./data:/app/data
 ```
 
 2. Run the container:
@@ -46,7 +46,7 @@ docker run -d \
   --restart unless-stopped \
   -p 4405:4405 \
   -e SITE_TITLE=RustKan \
-  -v $(pwd)/data:/usr/src/app/data \
+  -v $(pwd)/data:/app/data \
   ubermetroid/rustkan:latest
 ```
 
