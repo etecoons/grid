@@ -61,6 +61,8 @@ impl App {
             toasts: Vec::new(),
             next_toast_id: 0,
             enable_translation: false,
+            enable_themes: true,
+            enable_print: true,
         };
         app.update_document_title();
         app

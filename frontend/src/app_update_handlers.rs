@@ -25,6 +25,28 @@ impl App {
             .or_else(|| json.get("enableTranslation"))
             .and_then(|v| v.as_bool())
             .unwrap_or(false);
+        self.enable_themes = json
+            .get("enable_themes")
+            .or_else(|| json.get("enableThemes"))
+            .and_then(|v| v.as_bool())
+            .unwrap_or(true);
+        self.enable_print = json
+            .get("enable_print")
+            .or_else(|| json.get("enablePrint"))
+            .and_then(|v| v.as_bool())
+            .unwrap_or(true);
+
+        if !self.enable_themes {
+            self.theme = "tourian".to_string();
+            if let Some(window) = web_sys::window() {
+                if let Some(doc) = window.document() {
+                    if let Some(html) = doc.document_element() {
+                        let _ = html.set_attribute("data-theme", "tourian");
+                        let _ = html.set_attribute("class", "tourian");
+                    }
+                }
+            }
+        }
 
         if pin_req {
             let link = ctx.link().clone();

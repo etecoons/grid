@@ -12,6 +12,8 @@ pub struct App {
     pub error_message: Option<String>,
     pub board_data: Option<BoardData>,
     pub enable_translation: bool,
+    pub enable_themes: bool,
+    pub enable_print: bool,
 
     // UI states
     pub active_board_id: String,
