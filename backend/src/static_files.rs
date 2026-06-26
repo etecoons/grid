@@ -9,11 +9,11 @@ use std::path::Path;
 use crate::AppState;
 
 pub async fn serve_favicon() -> Response {
-    serve_static_file("frontend/dist/assets/logo.svg", "image/svg+xml").await
+    serve_static_file("frontend/dist/favicon.svg", "image/svg+xml").await
 }
 
 pub async fn serve_favicon_png() -> Response {
-    serve_static_file("frontend/dist/assets/logo.png", "image/png").await
+    serve_static_file("frontend/dist/favicon.png", "image/png").await
 }
 
 pub async fn serve_service_worker() -> Response {
