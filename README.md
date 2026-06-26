@@ -10,7 +10,7 @@ Grid is a clean, secure, and lightning-fast self-hosted Kanban board application
 
 ## ⚡ Key Features
 
-*   **Zebes Themes**: High-quality UI styling options based on the 6 classic Super Metroid regions (Crateria, Brinstar, Norfair, Wrecked Ship, Maridia, Tourian).
+*   **Dynamic Themes**: Dynamic theme options.
 *   **Access PIN Security**: Lock down the interface with an optional numerical PIN for absolute privacy.
 *   **Internationalization**: Built-in multilingual translation selector support.
 *   **Print Optimization**: Customized print stylesheet layout and print header action button.
