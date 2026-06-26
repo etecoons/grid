@@ -7,7 +7,7 @@ services:
     ports:
       - ${PORT:-4405}:4405
     volumes:
-      - ./data:/app/data
+      - ${GRID_DATA_PATH:-./data}:/app/data
     environment:
       PORT: 4405
       SITE_TITLE: ${GRID_SITE_TITLE:-Grid}
