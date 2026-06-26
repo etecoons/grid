@@ -10,11 +10,13 @@ services:
       - ./data:/app/data
     environment:
       PORT: 4405
-      SITE_TITLE: ${SITE_TITLE:-Grid}
+      SITE_TITLE: ${GRID_SITE_TITLE:-Grid}
       GRID_PIN: ${GRID_PIN:-}
-      BASE_URL: ${BASE_URL:-http://localhost:4405}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-*}
+      BASE_URL: ${GRID_BASE_URL:-http://localhost:4405}
+      ALLOWED_ORIGINS: ${GRID_ALLOWED_ORIGINS:-*}
       TZ: ${TZ:-UTC}
       ENABLE_TRANSLATION: ${ENABLE_TRANSLATION:-false}
+      ENABLE_THEMES: ${ENABLE_THEMES:-true}
+      ENABLE_PRINT: ${ENABLE_PRINT:-true}
       MAX_ATTEMPTS: ${MAX_ATTEMPTS:-5}
 
