@@ -4,7 +4,19 @@
   <img src="https://raw.githubusercontent.com/UberMetroid/grid/main/logo.png" alt="Grid Logo" width="128" height="128">
 </p>
 
-Grid is a clean, secure, and lightning-fast self-hosted Kanban board application built in Rust using Yew (WebAssembly frontend) and Axum (API backend).
+Grid is a clean, secure, and lightning-fast self-hosted Kanban board application. Built with a high-performance Rust (Axum/Tokio) backend and a WebAssembly (Yew) frontend.
+
+---
+
+## ⚡ Key Features
+
+*   **Zebes Themes**: High-quality UI styling options based on the 6 classic Super Metroid regions (Crateria, Brinstar, Norfair, Wrecked Ship, Maridia, Tourian).
+*   **Access PIN Security**: Lock down the interface with an optional numerical PIN for absolute privacy.
+*   **Internationalization**: Built-in multilingual translation selector support.
+*   **Print Optimization**: Customized print stylesheet layout and print header action button.
+*   **Performance First**: Tiny resource footprint, zero external JS engine dependencies, and rapid page load speeds.
+*   **Kanban Board**: Drag-and-drop task tracking cards across custom workflow columns.
+*   **Local Database Sync**: Reliable task persistence with quick backups.
 
 ---
 
