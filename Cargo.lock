@@ -96,6 +96,7 @@ version = "2.2.0"
 dependencies = [
  "axum",
  "chrono",
+ "constant_time_eq",
  "dotenvy",
  "indexmap",
  "ipnet",

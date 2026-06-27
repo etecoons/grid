@@ -73,9 +73,27 @@ pub fn initialize_storage() {
         // save goes through `0 -> 1` cleanly.
         let mut boards = indexmap::IndexMap::new();
         let mut columns = indexmap::IndexMap::new();
-        columns.insert("todo".to_string(), Column { name: "To Do".to_string(), tasks: vec![] });
-        columns.insert("doing".to_string(), Column { name: "Doing".to_string(), tasks: vec![] });
-        columns.insert("done".to_string(), Column { name: "Done".to_string(), tasks: vec![] });
+        columns.insert(
+            "todo".to_string(),
+            Column {
+                name: "To Do".to_string(),
+                tasks: vec![],
+            },
+        );
+        columns.insert(
+            "doing".to_string(),
+            Column {
+                name: "Doing".to_string(),
+                tasks: vec![],
+            },
+        );
+        columns.insert(
+            "done".to_string(),
+            Column {
+                name: "Done".to_string(),
+                tasks: vec![],
+            },
+        );
         boards.insert(
             "work".to_string(),
             Board {
@@ -88,7 +106,10 @@ pub fn initialize_storage() {
             boards,
             active_board: "work".to_string(),
         };
-        let _ = atomic_write(TASKS_FILE, serde_json::to_string_pretty(&seed).unwrap().as_bytes());
+        let _ = atomic_write(
+            TASKS_FILE,
+            serde_json::to_string_pretty(&seed).unwrap().as_bytes(),
+        );
     }
 }
 
@@ -206,8 +227,7 @@ pub async fn save_tasks(Json(payload): Json<BoardData>) -> impl IntoResponse {
         }
     };
 
-    match tokio::task::spawn_blocking(move || atomic_write(TASKS_FILE, serialized.as_bytes()))
-        .await
+    match tokio::task::spawn_blocking(move || atomic_write(TASKS_FILE, serialized.as_bytes())).await
     {
         Ok(Ok(())) => Json(serde_json::json!({
             "ok": true,
@@ -242,11 +262,17 @@ mod tests {
         let mut columns = indexmap::IndexMap::new();
         columns.insert(
             "todo".to_string(),
-            Column { name: "To Do".to_string(), tasks: vec!["a".into(), "b".into()] },
+            Column {
+                name: "To Do".to_string(),
+                tasks: vec!["a".into(), "b".into()],
+            },
         );
         boards.insert(
             "work".to_string(),
-            Board { name: "Work".to_string(), columns },
+            Board {
+                name: "Work".to_string(),
+                columns,
+            },
         );
         let data = BoardData {
             version: 42,

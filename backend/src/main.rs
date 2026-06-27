@@ -82,10 +82,10 @@ async fn main() {
     let state = AppState::new(config.clone(), asset_manifest);
 
     // Rate-limit cleanup thread.
-//
-// Note: login-attempt lockouts are now tracked in
-// `shared_assets::auth::attempts` (process-global). Entries self-expire
-// on read in `is_locked_out`, so no cleanup thread is required for them.
+    //
+    // Note: login-attempt lockouts are now tracked in
+    // `shared_assets::auth::attempts` (process-global). Entries self-expire
+    // on read in `is_locked_out`, so no cleanup thread is required for them.
     let state_clone = state.clone();
     tokio::spawn(async move {
         loop {
@@ -97,8 +97,7 @@ async fn main() {
     // Use the canonical CORS layer from shared-assets. The previous inline
     // version only allowed GET and POST; the shared version correctly
     // allows all common REST methods.
-    let server_config: Arc<shared_assets::server::ServerConfig> =
-        Arc::new(config.server.clone());
+    let server_config: Arc<shared_assets::server::ServerConfig> = Arc::new(config.server.clone());
     let cors = shared_assets::middleware::cors_layer(&server_config);
 
     let api_routes = Router::new()

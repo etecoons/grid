@@ -37,10 +37,7 @@ pub async fn is_authenticated(headers: &HeaderMap, state: &AppState) -> bool {
         // `constant_time_eq` returns false in constant time regardless of
         // where the first byte mismatches. This avoids the byte-by-byte
         // timing leak of a naive `==` compare.
-        (None, Some(hdr)) => constant_time_eq::constant_time_eq(
-            hdr.as_bytes(),
-            pin.as_bytes(),
-        ),
+        (None, Some(hdr)) => constant_time_eq::constant_time_eq(hdr.as_bytes(), pin.as_bytes()),
         (None, None) => false,
     }
 }
@@ -117,62 +114,6 @@ pub async fn origin_validation_middleware(
 // Grid's previous CSP permitted inline scripts and `unsafe-eval`, which is
 // the same posture shared-assets uses so Yew CSR works; do not tighten
 // without auditing the frontend.
-
-pub async fn origin_validation_middleware(
-    State(state): State<AppState>,
-    req: axum::extract::Request,
-    next: Next,
-) -> Result<Response, StatusCode> {
-    let origins_env = &state.config.server.allowed_origins;
-    if origins_env == "*" {
-        return Ok(next.run(req).await);
-    }
-
-    let referer = req.headers().get("referer").and_then(|v| v.to_str().ok());
-    let host = req.headers().get("host").and_then(|v| v.to_str().ok());
-
-    let origin = if let Some(ref_val) = referer {
-        if let Ok(url) = reqwest::Url::parse(ref_val) {
-            url.origin().ascii_serialization()
-        } else {
-            ref_val.to_string()
-        }
-    } else if let Some(host_val) = host {
-        let proto = req
-            .headers()
-            .get("x-forwarded-proto")
-            .and_then(|v| v.to_str().ok())
-            .unwrap_or("http");
-        format!("{}://{}", proto, host_val)
-    } else {
-        return Err(StatusCode::FORBIDDEN);
-    };
-
-    let allowed_list: Vec<String> = origins_env
-        .split(',')
-        .map(|s| {
-            let s_trim = s.trim();
-            if let Ok(url) = reqwest::Url::parse(s_trim) {
-                url.origin().ascii_serialization()
-            } else {
-                s_trim.to_string()
-            }
-        })
-        .collect();
-
-    let normalized_origin = if let Ok(url) = reqwest::Url::parse(&origin) {
-        url.origin().ascii_serialization()
-    } else {
-        origin.clone()
-    };
-
-    if allowed_list.contains(&normalized_origin) {
-        Ok(next.run(req).await)
-    } else {
-        tracing::warn!("Blocked request from origin: {}", origin);
-        Err(StatusCode::FORBIDDEN)
-    }
-}
 
 #[derive(serde::Deserialize)]
 pub struct VerifyPinPayload {
@@ -253,7 +194,8 @@ pub async fn verify_pin(
             .await
             .insert(session_id.clone());
 
-        let cookie_max_age = Duration::from_secs((state.config.server.cookie_max_age_hours * 3600) as u64);
+        let cookie_max_age =
+            Duration::from_secs((state.config.server.cookie_max_age_hours * 3600) as u64);
         let secure = headers
             .get("x-forwarded-proto")
             .and_then(|v| v.to_str().ok())
@@ -337,7 +279,7 @@ pub async fn pin_required(
     State(state): State<AppState>,
 ) -> impl IntoResponse {
     let ip = get_client_ip(
-        headers.headers(),
+        &headers,
         addr,
         state.config.server.trust_proxy,
         &state.config.server.trusted_proxies,
