@@ -21,7 +21,7 @@ pub async fn serve_service_worker() -> Response {
 }
 
 pub async fn serve_manifest(State(state): State<AppState>) -> impl IntoResponse {
-    let title = &state.config.site_title;
+    let title = &state.config.server.site_title;
     let manifest = serde_json::json!({
         "name": title,
         "short_name": title,

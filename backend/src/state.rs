@@ -33,9 +33,9 @@ impl AppState {
 
     pub async fn is_locked_out(&self, ip: IpAddr) -> bool {
         let map = self.login_attempts.read().await;
-        if let Some(attempts) = map.get(&ip).filter(|a| a.count >= self.config.max_attempts) {
+        if let Some(attempts) = map.get(&ip).filter(|a| a.count >= self.config.server.max_attempts as usize) {
             let elapsed = attempts.last_attempt.elapsed();
-            let lockout_dur = Duration::from_secs(self.config.lockout_time_minutes * 60);
+            let lockout_dur = Duration::from_secs(self.config.server.lockout_time_minutes * 60);
             if elapsed < lockout_dur {
                 return true;
             }
@@ -59,7 +59,7 @@ impl AppState {
     }
 
     pub async fn clean_old_lockouts(&self) {
-        let lockout_dur = Duration::from_secs(self.config.lockout_time_minutes * 60);
+        let lockout_dur = Duration::from_secs(self.config.server.lockout_time_minutes * 60);
         let mut map = self.login_attempts.write().await;
         map.retain(|_, attempts| attempts.last_attempt.elapsed() < lockout_dur);
     }

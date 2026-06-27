@@ -1,6 +1,6 @@
 [package]
 name = "backend"
-version = "2.1.1"
+version = "2.2.0"
 edition = "2024"
 authors = ["UberMetroid <admin@ubermetroid.com>"]
 license = "Apache-2.0"
@@ -15,6 +15,7 @@ tokio = { version = "1.36", features = ["macros", "rt-multi-thread", "net", "tim
 axum = "0.8"
 tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
 serde = { version = "1.0", features = ["derive"] }
+ipnet = "2.9"
 serde_json = "1.0"
 dotenvy = "0.15"
 tracing = "0.1"
@@ -24,6 +25,6 @@ chrono = { version = "0.4", default-features = false, features = ["std", "serde"
 regex = "1.10"
 indexmap = { version = "2.2", features = ["serde"] }
 sha2 = "0.11"
-ipnet = "2.9"
+
 
 

@@ -91,13 +91,13 @@ async fn main() {
         }
     });
 
-    let cors = if config.allowed_origins == "*" {
+    let cors = if config.server.allowed_origins == "*" {
         tower_http::cors::CorsLayer::permissive()
     } else {
         let mut cors = tower_http::cors::CorsLayer::new()
             .allow_methods([axum::http::Method::GET, axum::http::Method::POST])
             .allow_headers([axum::http::header::CONTENT_TYPE, axum::http::header::COOKIE]);
-        for origin in config.allowed_origins.split(',') {
+        for origin in config.server.allowed_origins.split(',') {
             if let Ok(parsed) = origin.trim().parse::<axum::http::HeaderValue>() {
                 cors = cors.allow_origin(parsed);
             }
@@ -166,7 +166,7 @@ async fn main() {
         .layer(cors)
         .with_state(state);
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.server.port));
     tracing::info!("Starting server on {}", addr);
 
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
