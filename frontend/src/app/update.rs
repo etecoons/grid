@@ -4,21 +4,23 @@ use crate::storage::StorageService;
 use crate::types::*;
 use gloo_net::http::Request;
 use yew::prelude::*;
+use shared_assets::theme::{Theme, mapping::Scheme};
 
 impl App {
     pub fn create_app(ctx: &Context<Self>) -> Self {
-        let raw_theme = StorageService::get_item("theme", "crateria");
-        let theme = match raw_theme.as_str() {
-            "light" => "brinstar".to_string(),
-            "dark" => "crateria".to_string(),
-            "nord" => "maridia".to_string(),
-            "dracula" => "wrecked_ship".to_string(),
-            "sepia" => "norfair".to_string(),
-            t => t.to_string(),
+        let raw_theme = StorageService::get_item("theme", Theme::default().name());
+        let theme = if let Some(scheme) = Scheme::from_id(&raw_theme) {
+            scheme.to_theme().name().to_string()
+        } else {
+            Theme::from_name(&raw_theme)
+                .unwrap_or_default()
+                .name()
+                .to_string()
         };
         if theme != raw_theme {
             StorageService::set_item("theme", &theme);
         }
+
         let language = Language::from_code(&StorageService::get_item("language", "en"));
 
         if let Some(window) = web_sys::window()

@@ -5,6 +5,8 @@ use crate::types::*;
 use crate::utils::normalize_board_data;
 use gloo_net::http::Request;
 use yew::prelude::*;
+use shared_assets::theme::Theme;
+
 
 impl App {
     pub fn handle_fetch_config_success(
@@ -139,26 +141,28 @@ impl App {
     }
 
     pub fn handle_toggle_theme(&mut self) -> bool {
-        let next_theme = match self.theme.as_str() {
-            "crateria" => "brinstar",
-            "brinstar" => "norfair",
-            "norfair" => "wrecked_ship",
-            "wrecked_ship" => "maridia",
-            "maridia" => "tourian",
-            _ => "crateria",
+        let current = Theme::from_name(&self.theme).unwrap_or_default();
+        let next = match current {
+            Theme::Brinstar => Theme::Norfair,
+            Theme::Norfair => Theme::WreckedShip,
+            Theme::WreckedShip => Theme::Maridia,
+            Theme::Maridia => Theme::Tourian,
+            Theme::Tourian => Theme::Crateria,
+            Theme::Crateria => Theme::Brinstar,
         };
-        self.theme = next_theme.to_string();
-        StorageService::set_item("theme", next_theme);
+        self.theme = next.name().to_string();
+        StorageService::set_item("theme", next.name());
 
         if let Some(window) = web_sys::window()
             && let Some(document) = window.document()
             && let Some(el) = document.document_element()
         {
-            let _ = el.set_attribute("class", next_theme);
-            let _ = el.set_attribute("data-theme", next_theme);
+            let _ = el.set_attribute("class", next.name());
+            let _ = el.set_attribute("data-theme", next.name());
         }
         true
     }
+
 
     pub fn handle_save_task(&mut self, ctx: &Context<Self>) -> bool {
         if self.task_modal_text.trim().is_empty() {
