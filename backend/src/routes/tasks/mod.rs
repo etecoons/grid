@@ -6,62 +6,17 @@ use axum::{
     response::{Html, IntoResponse},
 };
 use chrono::Utc;
-use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::Path as StdPath;
 use std::sync::LazyLock;
 use std::time::Instant;
 
+pub mod types;
+use types::{Column, Board, BoardData};
+
 static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 
 const TASKS_FILE: &str = "data/tasks.json";
-
-/// Persisted kanban state. Mirrors the WASM `BoardData` in
-/// `frontend/src/types.rs`. The `version` field implements optimistic
-/// concurrency: the client must send back the version it loaded; on
-/// mismatch the server returns 409 Conflict and the client refetches.
-///
-/// TODO(task-ids): `Column.tasks` is `Vec<String>`, so drag operations are
-/// keyed by list index and go stale if the list changes mid-drag (the
-/// dragged index may now point at a different task, or out of range). The
-/// robust fix is to add a `Task { id: String, text: String }` struct and
-/// key the drag protocol by `id`. This was called out as a high-priority
-/// issue by the original review; deferred here because it requires a
-/// coordinated frontend change to the drag/drop handlers in
-/// `frontend/src/app/update_handlers.rs` and the column-rendering code in
-/// `frontend/src/app/view.rs`. Tracked as a separate issue.
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Column {
-    pub name: String,
-    pub tasks: Vec<String>,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Board {
-    pub name: String,
-    pub columns: indexmap::IndexMap<String, Column>,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct BoardData {
-    /// Monotonic version. Incremented on every successful save. Missing
-    /// in legacy files (defaulted to 0 on read).
-    #[serde(default)]
-    pub version: u64,
-    pub boards: indexmap::IndexMap<String, Board>,
-    #[serde(rename = "activeBoard", default)]
-    pub active_board: String,
-}
-
-impl Default for BoardData {
-    fn default() -> Self {
-        Self {
-            version: 0,
-            boards: indexmap::IndexMap::new(),
-            active_board: String::new(),
-        }
-    }
-}
 
 pub fn initialize_storage() {
     if !StdPath::new("data").exists() {
