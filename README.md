@@ -1,7 +1,7 @@
 # Grid - High-Performance Kanban Board
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/UberMetroid/grid/main/frontend/Assets/favicon.png" alt="Grid Logo" width="128" height="128">
+  <img src="https://raw.githubusercontent.com/UberMetroid/grid/main/frontend/Assets/favicon.png?v=3.0.1" alt="Grid Logo" width="128" height="128">
 </p>
 
 Grid is a clean, secure, and lightning-fast self-hosted Kanban board application. Built with a high-performance Rust (Axum/Tokio) backend and a WebAssembly (Yew) frontend.
