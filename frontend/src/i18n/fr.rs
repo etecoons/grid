@@ -20,5 +20,6 @@ pub fn translations() -> Translations {
         toast_task_deleted: "Tâche supprimée",
         print_tooltip: "Imprimer le tableau",
         confirm_delete: "Voulez-vous vraiment supprimer cette tâche ?",
+        toast_failed_load_tasks: "Échec du chargement des tâches",
     }
 }

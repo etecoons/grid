@@ -20,5 +20,6 @@ pub fn translations() -> Translations {
         toast_task_deleted: "任务已删除",
         print_tooltip: "打印看板",
         confirm_delete: "您确定要删除此任务吗？",
+        toast_failed_load_tasks: "加载任务失败",
     }
 }

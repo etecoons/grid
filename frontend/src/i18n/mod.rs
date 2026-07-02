@@ -30,6 +30,7 @@ pub struct Translations {
     pub toast_task_deleted: &'static str,
     pub print_tooltip: &'static str,
     pub confirm_delete: &'static str,
+    pub toast_failed_load_tasks: &'static str,
 }
 
 pub fn get_translations(lang: Language) -> Translations {

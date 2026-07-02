@@ -20,5 +20,6 @@ pub fn translations() -> Translations {
         toast_task_deleted: "Tarefa excluída",
         print_tooltip: "Imprimir quadro",
         confirm_delete: "Tem certeza de que deseja excluir esta tarefa?",
+        toast_failed_load_tasks: "Falha ao carregar as tarefas",
     }
 }

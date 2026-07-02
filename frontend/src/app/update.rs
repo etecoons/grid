@@ -77,7 +77,8 @@ impl App {
             Msg::FetchConfigSuccess(json) => self.handle_fetch_config_success(ctx, json),
             Msg::FetchTasksSuccess(data) => self.handle_fetch_tasks_success(ctx, data),
             Msg::FetchTasksError => {
-                self.show_toast("Failed to load tasks".to_string(), true, ctx);
+                let tr = crate::i18n::get_translations(self.language);
+                self.show_toast(tr.toast_failed_load_tasks.to_string(), true, ctx);
                 true
             }
             Msg::VerifyPinSuccess => {

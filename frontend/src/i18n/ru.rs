@@ -20,5 +20,6 @@ pub fn translations() -> Translations {
         toast_task_deleted: "Задача удалена",
         print_tooltip: "Печать доски",
         confirm_delete: "Вы уверены, что хотите удалить эту задачу?",
+        toast_failed_load_tasks: "Не удалось загрузить задачи",
     }
 }

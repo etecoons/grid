@@ -20,5 +20,6 @@ pub fn translations() -> Translations {
         toast_task_deleted: "タスクが削除されました",
         print_tooltip: "ボードを印刷",
         confirm_delete: "このタスクを削除してもよろしいですか？",
+        toast_failed_load_tasks: "タスクの読み込みに失敗しました",
     }
 }

@@ -20,5 +20,6 @@ pub fn translations() -> Translations {
         toast_task_deleted: "Tarea eliminada",
         print_tooltip: "Imprimir tablero",
         confirm_delete: "¿Está seguro de que desea eliminar esta tarea?",
+        toast_failed_load_tasks: "Error al cargar las tareas",
     }
 }
