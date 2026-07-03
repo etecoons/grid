@@ -21,5 +21,8 @@ pub fn translations() -> Translations {
         print_tooltip: "Print board",
         confirm_delete: "Are you sure you want to delete this task?",
         toast_failed_load_tasks: "Failed to load tasks",
+        todo: "To Do",
+        doing: "Doing",
+        done: "Done",
     }
 }

@@ -18,7 +18,12 @@ impl App {
                             <div class="column">
                                 <div class="column-header-box">
                                     <h2 class="column-name">
-                                        {&col.name}
+                                        {match col_id.as_str() {
+                                            "todo" => tr.todo,
+                                            "doing" => tr.doing,
+                                            "done" => tr.done,
+                                            _ => &col.name,
+                                        }}
                                     </h2>
                                 </div>
                                 <div

@@ -21,5 +21,8 @@ pub fn translations() -> Translations {
         print_tooltip: "Imprimir tablero",
         confirm_delete: "¿Está seguro de que desea eliminar esta tarea?",
         toast_failed_load_tasks: "Error al cargar las tareas",
+        todo: "Pendiente",
+        doing: "En progreso",
+        done: "Completado",
     }
 }

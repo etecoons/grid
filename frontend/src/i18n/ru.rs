@@ -21,5 +21,8 @@ pub fn translations() -> Translations {
         print_tooltip: "Печать доски",
         confirm_delete: "Вы уверены, что хотите удалить эту задачу?",
         toast_failed_load_tasks: "Не удалось загрузить задачи",
+        todo: "Нужно сделать",
+        doing: "В процессе",
+        done: "Готово",
     }
 }

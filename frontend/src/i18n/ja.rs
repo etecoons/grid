@@ -21,5 +21,8 @@ pub fn translations() -> Translations {
         print_tooltip: "ボードを印刷",
         confirm_delete: "このタスクを削除してもよろしいですか？",
         toast_failed_load_tasks: "タスクの読み込みに失敗しました",
+        todo: "未対応",
+        doing: "処理中",
+        done: "完了",
     }
 }

@@ -31,6 +31,9 @@ pub struct Translations {
     pub print_tooltip: &'static str,
     pub confirm_delete: &'static str,
     pub toast_failed_load_tasks: &'static str,
+    pub todo: &'static str,
+    pub doing: &'static str,
+    pub done: &'static str,
 }
 
 pub fn get_translations(lang: Language) -> Translations {

@@ -21,5 +21,8 @@ pub fn translations() -> Translations {
         print_tooltip: "打印看板",
         confirm_delete: "您确定要删除此任务吗？",
         toast_failed_load_tasks: "加载任务失败",
+        todo: "待办",
+        doing: "进行中",
+        done: "已完成",
     }
 }

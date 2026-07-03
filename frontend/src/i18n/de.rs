@@ -21,5 +21,8 @@ pub fn translations() -> Translations {
         print_tooltip: "Board drucken",
         confirm_delete: "Sind Sie sicher, dass Sie diese Aufgabe löschen möchten?",
         toast_failed_load_tasks: "Fehler beim Laden der Aufgaben",
+        todo: "Zu erledigen",
+        doing: "In Arbeit",
+        done: "Erledigt",
     }
 }
