@@ -1,6 +1,6 @@
 services:
   grid:
-    image: ubermetroid/grid:latest
+    image: etecoons/grid:latest
     container_name: grid
     restart: unless-stopped
     ports:
