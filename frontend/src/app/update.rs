@@ -2,9 +2,9 @@ use crate::app::App;
 use crate::i18n::get_translations;
 use crate::types::*;
 use gloo_net::http::Request;
+use shared_frontend::i18n::strings::{StringKey, lookup};
 use shared_frontend::storage::StorageService;
 use shared_frontend::theme::{Theme, mapping::Scheme};
-use shared_frontend::i18n::strings::{lookup, StringKey};
 use yew::prelude::*;
 
 impl App {
@@ -25,7 +25,11 @@ impl App {
         }
 
         let stored_lang = StorageService.get_item("language");
-        let language = Language::from_code(&if stored_lang.is_empty() { "en".to_string() } else { stored_lang });
+        let language = Language::from_code(&if stored_lang.is_empty() {
+            "en".to_string()
+        } else {
+            stored_lang
+        });
 
         if let Some(window) = web_sys::window()
             && let Some(document) = window.document()
@@ -89,7 +93,11 @@ impl App {
                 self.is_authenticated = true;
                 self.error_message = None;
                 self.load_tasks(ctx);
-                self.show_toast(lookup(StringKey::StatusPinSuccess, self.language).to_string(), false, ctx);
+                self.show_toast(
+                    lookup(StringKey::StatusPinSuccess, self.language).to_string(),
+                    false,
+                    ctx,
+                );
                 true
             }
             Msg::VerifyPinFailure(err) => {
@@ -102,7 +110,11 @@ impl App {
                         err
                     });
                 }
-                self.show_toast(lookup(StringKey::StatusPinFailure, self.language).to_string(), true, ctx);
+                self.show_toast(
+                    lookup(StringKey::StatusPinFailure, self.language).to_string(),
+                    true,
+                    ctx,
+                );
                 true
             }
             Msg::PinInputChanged(val) => {
@@ -113,16 +125,28 @@ impl App {
             Msg::VerifyPin => self.handle_verify_pin(ctx),
             Msg::Logout => {
                 let res = self.handle_logout(ctx);
-                self.show_toast(lookup(StringKey::StatusLogout, self.language).to_string(), false, ctx);
+                self.show_toast(
+                    lookup(StringKey::StatusLogout, self.language).to_string(),
+                    false,
+                    ctx,
+                );
                 res
             }
             Msg::PrintBoard => {
                 if let Some(window) = web_sys::window() {
                     let print_res = window.print();
                     if print_res.is_ok() {
-                        self.show_toast(lookup(StringKey::StatusPrintSuccess, self.language).to_string(), false, ctx);
+                        self.show_toast(
+                            lookup(StringKey::StatusPrintSuccess, self.language).to_string(),
+                            false,
+                            ctx,
+                        );
                     } else {
-                        self.show_toast(lookup(StringKey::StatusPrintFailure, self.language).to_string(), true, ctx);
+                        self.show_toast(
+                            lookup(StringKey::StatusPrintFailure, self.language).to_string(),
+                            true,
+                            ctx,
+                        );
                     }
                 }
                 false
@@ -134,7 +158,11 @@ impl App {
             }
             Msg::ToggleTheme => {
                 let res = self.handle_toggle_theme();
-                self.show_toast(lookup(StringKey::StatusThemeChanged, self.language).to_string(), false, ctx);
+                self.show_toast(
+                    lookup(StringKey::StatusThemeChanged, self.language).to_string(),
+                    false,
+                    ctx,
+                );
                 res
             }
             Msg::OpenAddTaskModal(col_id) => {
@@ -229,7 +257,10 @@ impl App {
             let payload = data.clone();
             let link = ctx.link().clone();
             let lang = self.language;
-            link.send_message(Msg::ShowToast(lookup(StringKey::StatusSaving, lang).to_string(), false));
+            link.send_message(Msg::ShowToast(
+                lookup(StringKey::StatusSaving, lang).to_string(),
+                false,
+            ));
             wasm_bindgen_futures::spawn_local(async move {
                 match Request::post("/api/tasks")
                     .json(&payload)
@@ -238,13 +269,22 @@ impl App {
                     .await
                 {
                     Ok(resp) if resp.status() == 200 => {
-                        link.send_message(Msg::ShowToast(lookup(StringKey::StatusSaved, lang).to_string(), false));
+                        link.send_message(Msg::ShowToast(
+                            lookup(StringKey::StatusSaved, lang).to_string(),
+                            false,
+                        ));
                     }
                     Ok(resp) if resp.status() == 409 => {
-                        link.send_message(Msg::ShowToast(lookup(StringKey::StatusConflictError, lang).to_string(), true));
+                        link.send_message(Msg::ShowToast(
+                            lookup(StringKey::StatusConflictError, lang).to_string(),
+                            true,
+                        ));
                     }
                     _ => {
-                        link.send_message(Msg::ShowToast(lookup(StringKey::StatusSaveError, lang).to_string(), true));
+                        link.send_message(Msg::ShowToast(
+                            lookup(StringKey::StatusSaveError, lang).to_string(),
+                            true,
+                        ));
                     }
                 }
             });
