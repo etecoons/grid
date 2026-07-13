@@ -1,6 +1,7 @@
 pub mod update;
 pub mod update_handlers;
 pub mod view;
+pub mod storage_helpers;
 
 use crate::types::*;
 use yew::prelude::*;
