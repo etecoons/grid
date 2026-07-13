@@ -109,7 +109,7 @@ pub async fn serve_index(State(state): State<AppState>) -> impl IntoResponse {
 }
 
 pub async fn get_tasks() -> impl IntoResponse {
-    match tokio::fs::read_to_string(TASKS_FILE).await {
+    match tokio::fs::read_to_string(tasks_file()).await {
         // Return the raw JSON string so the frontend can deserialize into
         // its own `BoardData` type without us having to round-trip through
         // serde_json::Value (which would silently strip unknown fields).
