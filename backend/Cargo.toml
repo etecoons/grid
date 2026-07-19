@@ -2,10 +2,10 @@
 name = "backend"
 version = "3.0.38"
 edition = "2024"
-authors = ["etecoons"]
+authors = ["studio2201"]
 license = "Apache-2.0"
-repository = "https://github.com/etecoons/Grid"
-homepage = "https://github.com/etecoons/Grid"
+repository = "https://github.com/studio2201/grid"
+homepage = "https://github.com/studio2201/grid"
 description = "Axum backend service for Grid."
 readme = "../README.md"
 

@@ -1,6 +1,6 @@
 services:
   grid:
-    image: ghcr.io/etecoons/grid:latest
+    image: ghcr.io/studio2201/grid:latest
     container_name: grid
     restart: unless-stopped
     ports:
