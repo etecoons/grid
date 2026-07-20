@@ -1,9 +1,3 @@
-//! Container smoke tests for `grid`.
-//!
-//! Run against a live container started with `GRID_PIN` set:
-//!   docker run -e GRID_PIN=<pin> -p <port>:4405 ...
-//!   SMOKE_PORT=<port> SMOKE_PIN=<pin> \
-//!     cargo test --test container_smoke -- --ignored --nocapture
 
 use reqwest::Client;
 use serde_json::Value;
@@ -93,7 +87,6 @@ async fn login(c: &Client) {
     assert!(r.status().is_success(), "auth login failed: {}", r.status());
 }
 
-// ---------- common tests ----------
 
 #[tokio::test]
 #[ignore]
@@ -150,16 +143,12 @@ async fn manifest_parses_as_pwa() {
 #[tokio::test]
 #[ignore]
 async fn config_endpoint_has_site_title() {
-    // Grid's auth-check endpoint requires authentication; the other config
-    // endpoints don't exist. Verify authenticated config works as a proxy.
     wait_for_health().await;
     let c = client();
     login(&c).await;
     let r = try_paths(&c, CONFIG_CANDIDATES)
         .await
         .unwrap_or_else(|| panic!("no config path returned 2xx: {CONFIG_CANDIDATES:?}"));
-    // Some grid endpoints (e.g. /api/auth-check) return 200 with an empty
-    // body; treat that as "no siteTitle field present" and pass.
     let v: Result<Value, _> = r.json().await;
     if let Ok(v) = v {
         if let Some(title) = v["siteTitle"].as_str().or_else(|| v["site_title"].as_str()) {
@@ -182,7 +171,6 @@ async fn service_worker_or_frontend_serves() {
     );
 }
 
-// ---------- per-app tests: grid (boards CRUD) ----------
 
 #[tokio::test]
 #[ignore]
@@ -197,8 +185,6 @@ async fn boards_list_returns_object() {
         .unwrap();
     assert_eq!(r.status(), 200, "expected 200 from /api/tasks");
     let v: Value = r.json().await.unwrap();
-    // Grid's BoardData has shape `{ version, boards, activeBoard }`. Accept
-    // any object that exposes the `boards` key as either array or map.
     assert!(v.is_object(), "/api/tasks must return an object, got {v:?}");
     assert!(
         v["boards"].is_object() || v["boards"].is_array(),
@@ -214,8 +200,6 @@ async fn board_round_trip_creates_and_appears() {
     login(&c).await;
 
     let board_name = unique_id();
-    // Grid's POST /api/tasks accepts the full BoardData; write a minimal
-    // payload that preserves whatever boards already exist on disk.
     let get = c
         .get(format!("{}/api/tasks", base_url()))
         .send()
