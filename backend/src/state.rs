@@ -16,6 +16,7 @@ pub struct AppState {
     pub asset_manifest: std::sync::Arc<Vec<String>>,
     pub active_sessions: Arc<RwLock<std::collections::HashSet<String>>>,
     pub rate_limiter: Arc<RwLock<HashMap<String, Vec<Instant>>>>,
+    pub tasks_lock: Arc<tokio::sync::Mutex<()>>,
 }
 
 impl AppState {
@@ -25,6 +26,7 @@ impl AppState {
             asset_manifest,
             active_sessions: Arc::new(RwLock::new(std::collections::HashSet::new())),
             rate_limiter: Arc::new(RwLock::new(HashMap::new())),
+            tasks_lock: Arc::new(tokio::sync::Mutex::new(())),
         }
     }
 

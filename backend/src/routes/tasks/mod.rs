@@ -125,7 +125,12 @@ pub async fn get_tasks() -> impl IntoResponse {
 /// incoming payload's `version` is less than the current stored version,
 /// returns 409 Conflict with the current version. Otherwise writes
 /// atomically with `version + 1`.
-pub async fn save_tasks(Json(payload): Json<BoardData>) -> impl IntoResponse {
+pub async fn save_tasks(
+    State(state): State<AppState>,
+    Json(payload): Json<BoardData>,
+) -> impl IntoResponse {
+    let _lock = state.tasks_lock.lock().await;
+
     // Validate structure: every board must have at least one column, every
     // column must have a name. Malformed payloads (e.g. truncated JSON)
     // already fail at Json extraction with 422 by axum's built-in handler,
