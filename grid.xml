@@ -13,7 +13,7 @@
   <Category>Productivity:Other Network:Web</Category>
   <WebUI>http://[IP]:[PORT:4405]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/studio2201/unraid-templates/master/templates/grid.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/studio2201/unraid-templates/master/icons/grid.png</Icon>
+  <Icon>https://raw.githubusercontent.com/studio2201/.github/master/profile/assets/grid.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
