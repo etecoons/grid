@@ -98,7 +98,7 @@ pub async fn serve_index(State(state): State<AppState>) -> impl IntoResponse {
     let path = StdPath::new("frontend/dist/index.html");
     match tokio::fs::read_to_string(path).await {
         Ok(content) => {
-            let rendered = content.replace("{{SITE_TITLE}}", &state.config.server.site_title);
+            let rendered = content.replace("{{SITE_TITLE}}", &state.config.site_title);
             Html(rendered).into_response()
         }
         Err(_) => StatusCode::NOT_FOUND.into_response(),

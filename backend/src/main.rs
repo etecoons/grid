@@ -8,6 +8,7 @@ use std::time::Duration;
 use tower_http::services::ServeDir;
 
 mod config;
+mod ip;
 pub mod middleware;
 mod routes;
 mod state;
@@ -50,8 +51,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Use the canonical CORS layer from shared-assets. The previous inline
     // version only allowed GET and POST; the shared version correctly
     // allows all common REST methods.
-    let server_config: Arc<shared_backend::server::ServerConfig> = Arc::new(config.server.clone());
-    let cors = shared_backend::middleware::cors_layer(&server_config);
+    let server_config: Arc<crate::config::AppConfig> = Arc::new(config.clone());
+    let cors = crate::middleware::cors_layer(&crate::middleware::CorsState(server_config.clone()));
 
     let api_routes = Router::new()
         .route(
@@ -96,22 +97,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/", get(tasks::serve_index))
         .route("/index.html", get(tasks::serve_index))
         .fallback_service(ServeDir::new("frontend/dist"))
-        .layer(axum_middleware::from_fn(
-            shared_backend::middleware::security_headers_layer,
+        .layer(axum_middleware::from_fn_with_state(
+            crate::middleware::SecurityHeadersState(server_config.clone()),
+            crate::middleware::security_headers_layer,
         ))
         .layer(axum_middleware::from_fn_with_state(
-            shared_backend::middleware::title::TitleState(server_config.clone()),
-            shared_backend::middleware::title::title_injection_layer,
+            crate::middleware::TitleState(server_config.clone()),
+            crate::middleware::title_injection_layer,
         ))
         .layer(axum_middleware::from_fn_with_state(
-            shared_backend::middleware::HstsState(server_config.clone()),
-            shared_backend::middleware::hsts_layer,
+            crate::middleware::HstsState(server_config.clone()),
+            crate::middleware::hsts_layer,
         ))
         .layer(tower_http::trace::TraceLayer::new_for_http())
         .layer(cors)
         .with_state(state);
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.server.port));
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
     tracing::info!("Starting server on {}", addr);
 
     let listener = tokio::net::TcpListener::bind(addr).await?;
