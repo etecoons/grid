@@ -94,6 +94,10 @@ Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
 
 ---
 
+### Project Banner Showcase
+
+Official **Grid** project banner displaying lightning-fast self-hosted Kanban board flow visual architecture.
+
 <p align="center">
   <a href="https://github.com/studio2201/grid">
     <img src="assets/grid-header.jpg" alt="studio2201 banner" width="100%">
